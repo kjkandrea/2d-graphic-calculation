@@ -3,24 +3,25 @@ import './style.css';
 const canvas = document.getElementById('graphic-canvas') as HTMLCanvasElement;
 const ctx = canvas.getContext('2d');
 
+const grid = 25;
+
+ctx.scale(grid, grid);
+
+const width = canvas.width / grid; // 20
+const height = canvas.height / grid; // 20
+
+ctx.lineWidth = ctx.lineWidth / grid;
+ctx.strokeStyle = 'rgb(0, 0, 0)';
+
 draw_grid();
+draw_straight_line();
 
 function draw_grid() {
-  const grid = 25;
-
-  ctx.scale(grid, grid);
-
-  const width = canvas.width / grid; // 20
-  const height = canvas.height / grid; // 20
-
-  ctx.lineWidth = ctx.lineWidth / grid;
-  ctx.strokeStyle = 'rgb(0, 0, 0)';
-
   clear();
   ctx.save();
-  draw_grid();
+  draw_lines();
 
-  function draw_grid() {
+  function draw_lines() {
     ctx.setLineDash([0.1, 0.1]); // 파선
     ctx.strokeStyle = 'rgb(128, 128, 128)'; // 회색
     ctx.beginPath();
@@ -39,6 +40,20 @@ function draw_grid() {
 
     ctx.stroke();
     ctx.restore();
+  }
+}
+
+function draw_straight_line() {
+  for (let i = 0; i <= width; i += 1) {
+    ctx.beginPath();
+    ctx.fillStyle = 'rgb(255, 255, 0)'; // 노랑
+    ctx.arc(i, i, 0.25, 0, 2 * Math.PI);
+    ctx.fill();
+
+    ctx.beginPath();
+    ctx.fillStyle = 'rgb(255, 0, 0)'; // 빨강
+    ctx.arc(i, 10, 0.25, 0, 2 * Math.PI);
+    ctx.fill();
   }
 }
 
