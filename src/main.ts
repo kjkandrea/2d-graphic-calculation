@@ -34,8 +34,13 @@ drawButton.addEventListener('click', () => {
   }
 
   draw_straight_line_conner_to_y(y);
+
+  yInput.value = '';
 });
-eraseButton.addEventListener('click', () => console.log('erase button click'));
+eraseButton.addEventListener('click', () => {
+  clear();
+  draw_grid();
+});
 
 draw_grid();
 // draw_straight_line();
