@@ -1,5 +1,17 @@
 import './style.css';
 
+// user event listen...
+const drawButton = document.getElementById('draw-button') as HTMLButtonElement;
+const eraseButton = document.getElementById('erase-button') as HTMLButtonElement;
+const yInput = document.getElementById('y') as HTMLInputElement;
+
+drawButton.addEventListener('click', () => {
+  console.log('draw button click');
+  console.log('value : ', yInput.value);
+});
+eraseButton.addEventListener('click', () => console.log('erase button click'));
+
+// canvas...
 const canvas = document.getElementById('graphic-canvas') as HTMLCanvasElement;
 const ctx = canvas.getContext('2d');
 
