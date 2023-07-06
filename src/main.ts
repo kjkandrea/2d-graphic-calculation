@@ -34,6 +34,7 @@ drawButton.addEventListener('click', () => {
   }
 
   draw_straight_line_conner_to_y(y);
+  draw_straight_line_conner_to_y__quick(y);
 
   yInput.value = '';
 });
@@ -80,6 +81,7 @@ function draw_straight_line_conner_to_y(y: number) {
   ctx.lineTo(width, y);
   ctx.stroke();
 
+  console.time('draw_straight_line_conner_to_y');
   const slope = y / width;
   ctx.fillStyle = 'rgb(0, 0, 0)';
 
@@ -88,6 +90,37 @@ function draw_straight_line_conner_to_y(y: number) {
     ctx.arc(x, Math.round(x * slope), 0.15, 0, 2 * Math.PI);
     ctx.fill();
   }
+  console.timeEnd('draw_straight_line_conner_to_y');
+}
+
+function draw_straight_line_conner_to_y__quick(dy: number) {
+  ctx.beginPath();
+  ctx.moveTo(0, 0);
+  ctx.setLineDash([0.2, 0.2]);
+  ctx.lineTo(width, dy);
+  ctx.stroke();
+
+  console.time('draw_straight_line_conner_to_y__quick');
+  // 실수 계산을 안하므로 근소하게 빠름
+  let dx = width;
+  let d = 2 * dy - dx;
+  let y = 0;
+
+  dx *= 2;
+  dy *= 2;
+
+  for (let x = 0; x <= width; x += 1) {
+    ctx.beginPath();
+    ctx.arc(x, y, 0.15, 0, 2 * Math.PI);
+    ctx.fill();
+
+    if (d >= 0) {
+      y += 1;
+      d -= dx;
+    }
+    d += dy;
+  }
+  console.timeEnd('draw_straight_line_conner_to_y__quick');
 }
 
 function draw_two_straight_line() {
