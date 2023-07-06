@@ -1,16 +1,5 @@
 import './style.css';
 
-// user event listen...
-const drawButton = document.getElementById('draw-button') as HTMLButtonElement;
-const eraseButton = document.getElementById('erase-button') as HTMLButtonElement;
-const yInput = document.getElementById('y') as HTMLInputElement;
-
-drawButton.addEventListener('click', () => {
-  console.log('draw button click');
-  console.log('value : ', yInput.value);
-});
-eraseButton.addEventListener('click', () => console.log('erase button click'));
-
 // canvas...
 const canvas = document.getElementById('graphic-canvas') as HTMLCanvasElement;
 const ctx = canvas.getContext('2d');
@@ -25,9 +14,33 @@ const height = canvas.height / grid; // 20
 ctx.lineWidth = ctx.lineWidth / grid;
 ctx.strokeStyle = 'rgb(0, 0, 0)';
 
-draw_grid();
-draw_straight_line();
+// user event listen...
+const drawButton = document.getElementById('draw-button') as HTMLButtonElement;
+const eraseButton = document.getElementById('erase-button') as HTMLButtonElement;
+const yInput = document.getElementById('y') as HTMLInputElement;
 
+drawButton.addEventListener('click', () => {
+  const y = Number(yInput.value);
+
+  if (Number.isNaN(y)) {
+    alert('y value must be ean integer');
+    return;
+  }
+
+  const MIN = 0;
+  if (y < MIN || y > height) {
+    alert(`y value must be between ${MIN} and ${height}`);
+    return;
+  }
+
+  draw_straight_line_conner_to_y(y);
+});
+eraseButton.addEventListener('click', () => console.log('erase button click'));
+
+draw_grid();
+// draw_straight_line();
+
+// draw...
 function draw_grid() {
   clear();
   ctx.save();
@@ -55,7 +68,24 @@ function draw_grid() {
   }
 }
 
-function draw_straight_line() {
+function draw_straight_line_conner_to_y(y: number) {
+  ctx.beginPath();
+  ctx.moveTo(0, 0);
+  ctx.setLineDash([0.2, 0.2]);
+  ctx.lineTo(width, y);
+  ctx.stroke();
+
+  const slope = y / width;
+  ctx.fillStyle = 'rgb(0, 0, 0)';
+
+  for (let x = 0; x <= width; x += 1) {
+    ctx.beginPath();
+    ctx.arc(x, Math.round(x * slope), 0.15, 0, 2 * Math.PI);
+    ctx.fill();
+  }
+}
+
+function draw_two_straight_line() {
   for (let i = 0; i <= width; i += 1) {
     ctx.beginPath();
     ctx.fillStyle = 'rgb(255, 255, 0)'; // 노랑
